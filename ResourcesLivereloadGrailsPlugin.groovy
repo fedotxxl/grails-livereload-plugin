@@ -3,12 +3,15 @@ import io.belov.grails.livereload.LiveReloadConfigHolder
 
 class ResourcesLivereloadGrailsPlugin {
     // the plugin version
-    def version = "0.1.2"
+    def version = "0.1.7"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
     // the other plugins this plugin depends on
-    def dependsOn = [resources: '1.1.5 > *']
+    def dependsOn = [resources: '1.2.RC2 > *']
     def loadAfter = ['resources']
+
+    //http://grails.1312388.n4.nabble.com/How-can-I-get-build-and-run-app-dependencies-but-excluded-from-war-td4645847.html
+    def scopes = [excludes: 'war']
 
     // TODO Fill in these fields
     def title = "Grails Plugin Resources Livereload Plugin" // Headline display name of the plugin
@@ -32,6 +35,10 @@ Brief summary/description of the plugin.
     }
 
     def onConfigChange = { event ->
+        //forget old config values
+        LiveReloadConfigHolder.reset()
+
+        //start server (enable from false to true)
         if (LiveReloadConfigHolder.config.enable) {
             LiveReload.instance.startServer()
         }

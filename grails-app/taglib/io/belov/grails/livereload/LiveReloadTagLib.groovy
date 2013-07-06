@@ -9,7 +9,9 @@ class LiveReloadTagLib {
     static namespace = "livereload"
 
     def js = {
-        out << "<script type='text/javascript' src='${g.resource(file: 'js/livereload.js', plugin: 'resources-livereload', absolute: true)}'></script>"
+        if (LiveReloadConfigHolder.config.enable) {
+            out << "<script type='text/javascript' src='${g.resource(file: 'js/livereload.js', plugin: 'resources-livereload', absolute: true)}'></script>"
+        }
     }
 
 }

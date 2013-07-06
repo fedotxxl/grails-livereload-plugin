@@ -16,4 +16,8 @@ class LiveReloadConfigHolder {
 
         return c
     }
+
+    static void reset() {
+        c = null
+    }
 }
