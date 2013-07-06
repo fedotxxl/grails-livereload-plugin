@@ -2,7 +2,6 @@ grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 grails.project.target.level = 1.6
-//grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
@@ -10,27 +9,25 @@ grails.project.dependency.resolution = {
         // uncomment to disable ehcache
         // excludes 'ehcache'
     }
-    log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
+    log "warn"
     repositories {
         grailsCentral()
-        // uncomment the below to enable remote dependency resolution
-        // from public Maven repositories
-        //mavenCentral()
-        //mavenLocal()
-        //mavenRepo "http://snapshots.repository.codehaus.org"
-        //mavenRepo "http://repository.codehaus.org"
-        //mavenRepo "http://download.java.net/maven/2/"
-        //mavenRepo "http://repository.jboss.com/maven2/"
     }
-    dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-        // runtime 'mysql:mysql-connector-java:5.1.5'
+    dependencies {
+        //websocket
+        ["tyrus-server", "tyrus-client", "tyrus-container-grizzly"].each {
+            compile "org.glassfish.tyrus:$it:1.1"
+        }
     }
 
     plugins {
-        build(":tomcat:$grailsVersion",
-              ":release:1.0.0") {
+        build(":tomcat:$grailsVersion", ":release:2.0.3", ":rest-client-builder:1.0.2",) {
+            export = false
+        }
+
+        //resources and platfrom core plugins
+        compile (":resources:1.1.5", ":platform-core:1.0.RC5") {
             export = false
         }
     }
