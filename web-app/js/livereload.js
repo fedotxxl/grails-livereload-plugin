@@ -135,7 +135,6 @@
         function Connector(options, WebSocket, Timer, handlers) {
             var _this = this;
             this.options = options;
-            this.options.host = "localhost";
             this.WebSocket = WebSocket;
             this.Timer = Timer;
             this.handlers = handlers;
@@ -143,9 +142,6 @@
             this._nextDelay = this.options.mindelay;
             this._connectionDesired = false;
             this.protocol = 0;
-
-            console.log(this._uri);
-
             this.protocolParser = new Parser({
                 connected: function(protocol) {
                     _this.protocol = protocol;
@@ -320,7 +316,7 @@
     var Options;
     __options.Options = Options = (function() {
         function Options() {
-            this.host = null;
+            this.host = 'localhost';
             this.port = 35729;
             this.snipver = null;
             this.ext = null;
@@ -342,18 +338,29 @@
         return Options;
     })();
     Options.extract = function(document) {
+        var getLocation = function(href) {
+            var l = document.createElement("a");
+            l.href = href;
+            return l;
+        };
+
         var element, keyAndValue, m, mm, options, pair, src, _i, _j, _len, _len2, _ref, _ref2;
         _ref = document.getElementsByTagName('script');
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             element = _ref[_i];
             if ((src = element.src) && (m = src.match(/^[^:]+:\/\/(.*)\/z?livereload\.js(?:\?(.*))?$/))) {
                 options = new Options();
-                if (mm = m[1].match(/^([^\/:]+)(?::(\d+))?$/)) {
-                    options.host = mm[1];
-                    if (mm[2]) {
-                        options.port = parseInt(mm[2], 10);
-                    }
-                }
+//                if (mm = m[1].match(/^([^\/:]+)(?::(\d+))?$/)) {
+//                    options.host = mm[1];
+//                    if (mm[2]) {
+//                        options.port = parseInt(mm[2], 10);
+//                    }
+//                }
+
+                var l = getLocation(element.src);
+                options.host = l.hostname;
+                options.verbose = (l.search.match(/LR-verbose/)) ? true : false;
+
                 if (m[2]) {
                     _ref2 = m[2].split('&');
                     for (_j = 0, _len2 = _ref2.length; _j < _len2; _j++) {
@@ -838,14 +845,16 @@
 
         function LiveReload(window) {
             var _this = this;
+            var consoleStub = {
+                log: function() {},
+                error: function() {}
+            };
+
             this.window = window;
             this.listeners = {};
             this.plugins = [];
             this.pluginIdentifiers = {};
-            this.console = this.window.location.href.match(/LR-verbose/) && this.window.console && this.window.console.log && this.window.console.error ? this.window.console : {
-                log: function() {},
-                error: function() {}
-            };
+            this.console = this.window.console && this.window.console.log && this.window.console.error ? this.window.console : consoleStub;
             if (!(this.WebSocket = this.window.WebSocket || this.window.MozWebSocket)) {
                 console.error("LiveReload disabled because the browser does not seem to support web sockets");
                 return;
@@ -854,6 +863,9 @@
                 console.error("LiveReload disabled because it could not find its own <SCRIPT> tag");
                 return;
             }
+
+            if (!this.options.verbose) this.console = consoleStub;
+
             this.reloader = new Reloader(this.window, this.console, Timer);
             this.connector = new Connector(this.options, this.WebSocket, Timer, {
                 connecting: function() {},

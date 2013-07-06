@@ -3,7 +3,7 @@ import io.belov.grails.livereload.LiveReloadConfigHolder
 
 class ResourcesLivereloadGrailsPlugin {
     // the plugin version
-    def version = "0.1.7"
+    def version = "0.1.9"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
     // the other plugins this plugin depends on
@@ -25,6 +25,7 @@ Brief summary/description of the plugin.
 
     def doWithConfigOptions = {
         'enable'(type: Boolean, defaultValue: true)
+        'verbose'(type: Boolean, defaultValue: true)
         'reload'(type: String, defaultValue: 'byName') //or all
     }
 

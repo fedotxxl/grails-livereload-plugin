@@ -10,7 +10,8 @@ class LiveReloadTagLib {
 
     def js = {
         if (LiveReloadConfigHolder.config.enable) {
-            out << "<script type='text/javascript' src='${g.resource(file: 'js/livereload.js', plugin: 'resources-livereload', absolute: true)}'></script>"
+            def file = "js/livereload.js${(LiveReloadConfigHolder.config.verbose) ? '?LR-verbose=1' : ''}"
+            out << "<script type='text/javascript' src='${g.resource(file: file, plugin: 'resources-livereload', absolute: true)}'></script>"
         }
     }
 
