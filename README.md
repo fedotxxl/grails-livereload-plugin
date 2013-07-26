@@ -1,18 +1,20 @@
 Description
 -----------
 This plugin integrates [livereload-js](https://github.com/livereload/livereload-js) with Grails:
-1.  It starts WebSocket server when you start your application
-2.  It sends message to the client when you change `css` or `js` file
-3.  [livereload-js](https://github.com/livereload/livereload-js) updates css files (without page refresh) or refreshes pages to reload js file
+
+1. It starts WebSocket server when you start your application
+2. It sends message to the client when you change `css` or `js` file
+3. [livereload-js](https://github.com/livereload/livereload-js) updates css files (without page refresh) or refreshes pages to reload js file
 
 >livereload-js uses WebSocket to communicate with server. So this plugin doesn't work with browsers that [doesn't support WebSocket](http://caniuse.com/#feat=websockets)
 
 Installation
 -----------
 Plugin installation requires 3 steps to be done:
-1.  Add plugin to your `BuildConfig.groovy`: `compile ":livereload:0.2"`
-2.  Configure plugin (check section "Configuration")
-3.  Add js file to you layout (check section "Adding livereload.js")
+
+1. Add plugin to your `BuildConfig.groovy`: `compile ":livereload:0.2"`
+2. Configure plugin (check section "Configuration")
+3. Add js file to you layout (check section "Adding livereload.js")
 
 Configuration
 -----------
