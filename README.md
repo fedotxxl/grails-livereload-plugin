@@ -21,7 +21,7 @@ By default plugin is disabled. To enable `css` reloading add `plugin.livereload.
 plugin {
     livereload {
         css = true
-        js = false
+        js = true
     }
 }
 ```
