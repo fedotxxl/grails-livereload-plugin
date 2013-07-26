@@ -11,10 +11,16 @@ class LiveReloadConfigHolder {
 
     static ConfigObject getConfig() {
         if (!c) {
-            c = Holders.config.plugin.resourcesLivereload
+            c = Holders.config.plugin.livereload
         }
 
         return c
+    }
+
+    static boolean isEnabled() {
+        //this method should be fast
+        def localConfig = (c) ?: config
+        return localConfig.css || localConfig.js
     }
 
     static void reset() {

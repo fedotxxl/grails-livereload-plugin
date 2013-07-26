@@ -26,8 +26,6 @@ grails.project.dependency.resolution = {
             export = false
         }
 
-        //resources and platfrom core plugins
-        compile ":resources:1.2.RC2"
         compile ":platform-core:1.0.RC5"
     }
 }

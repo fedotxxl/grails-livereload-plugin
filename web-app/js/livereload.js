@@ -697,14 +697,12 @@
                     return func();
                 };
                 clone.onload = function() {
-                    console.log("onload!");
                     _this.knownToSupportCssOnLoad = true;
                     return executeCallback();
                 };
                 if (!this.knownToSupportCssOnLoad) {
                     (poll = function() {
                         if (clone.sheet) {
-                            console.log("polling!");
                             return executeCallback();
                         } else {
                             return _this.Timer.start(50, poll);

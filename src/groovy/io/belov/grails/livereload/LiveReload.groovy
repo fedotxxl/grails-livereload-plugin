@@ -22,12 +22,13 @@ class LiveReload {
     }
 
     void startServer() {
-        if (LiveReloadConfigHolder.config.enable && !started) {
+        if (LiveReloadConfigHolder.enabled && !started) {
             def server = "localhost"
             def port = 35729
             def root = "livereload"
 
             try {
+                log.info "LiveReload: starting server on ${server}:${port}"
                 def webSocketServer = new Server(server, port, "/$root", LiveReloadServerConfig);
                 webSocketServer.start();
                 started = true
@@ -35,10 +36,6 @@ class LiveReload {
                 log.error("LiveReload: unable to start WebSocket server ${server}:$port/$root", e)
             }
         }
-    }
-
-    Boolean getStarted() {
-        return this.@started
     }
 
     synchronized void addSession(Session session) {
@@ -60,7 +57,7 @@ class LiveReload {
         }
     }
 
-    synchronized void removeClosedSessions() {
+    private synchronized void removeClosedSessions() {
         sessions = sessions.findAll { it.isOpen() }
     }
 }
