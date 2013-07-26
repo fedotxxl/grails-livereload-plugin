@@ -16,7 +16,8 @@ Plugin installation requires 3 steps to be done:
 
 Configuration
 -----------
-By default plugin is disabled. To enable `css` reloading add `plugin.livereload.css = true` in your `Config.groovy`. To enable `js` reloading add `plugin.livereload.js = true`. To enable `css` and `js` reloading you can use following syntax:
+By default plugin is disabled. To enable `css` reloading add `plugin.livereload.css = true` in your `Config.groovy`.
+To enable `js` reloading add `plugin.livereload.js = true`. To enable `css` and `js` reloading you can use following syntax:
 ```groovy
 plugin {
     livereload {
@@ -29,7 +30,7 @@ plugin {
 Adding livereload.js
 -----------
 Add `<livereload:js/>` right before `</body>`. `js` method of `livereload` TagLib will add `livereload.js` file into response HTML only when livereload is enabled.
-If livereload is disabled (`plugin.livereload.css == false && plugin.livereload.js== false`) it does nothing.
+If livereload is disabled (`plugin.livereload.css == false && plugin.livereload.js == false`) it does nothing.
 
 If you have any problems
 -------------------------
