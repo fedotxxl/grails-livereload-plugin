@@ -5,9 +5,7 @@ This plugin integrates [livereload-js](https://github.com/livereload/livereload-
 2. It sends message to the client when you change `css` or `js` file
 3. [livereload-js](https://github.com/livereload/livereload-js) updates css files (without page refresh) or refreshes pages to reload js file
 
-<pre>
-livereload-js uses WebSocket to communicate with server. So this plugin doesn't work with browsers that [doesn't support WebSocket](http://caniuse.com/#feat=websockets)
-</pre>
+>livereload-js uses WebSocket to communicate with server. So this plugin doesn't work with browsers that [doesn't support WebSocket](http://caniuse.com/#feat=websockets)
 
 Installation
 -----------
@@ -19,7 +17,7 @@ Plugin installation requires 3 steps to be done:
 Configuration
 -----------
 By default plugin is disabled. To enable `css` reloading add `plugin.livereload.css = true` in your `Config.groovy`. To enable `js` reloading add `plugin.livereload.js = true`. To enable `css` and `js` reloading you can use following syntax:
-```java
+```groovy
 plugin {
     livereload {
         css = true
