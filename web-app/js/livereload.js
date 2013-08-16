@@ -920,6 +920,10 @@
             return this.listeners[eventName] = handler;
         };
 
+        LiveReload.prototype.isDisabled = function() {
+            return !this.reloader
+        };
+
         LiveReload.prototype.log = function(message) {
             return this.console.log("" + message);
         };
@@ -1048,22 +1052,25 @@
     var CustomEvents, LiveReload, k;
     CustomEvents = __customevents;
     LiveReload = window.LiveReload = new (__livereload.LiveReload)(window);
-    for (k in window) {
-        if (k.match(/^LiveReloadPlugin/)) {
-            LiveReload.addPlugin(window[k]);
+
+    if (!LiveReload.isDisabled()) {
+        for (k in window) {
+            if (k.match(/^LiveReloadPlugin/)) {
+                LiveReload.addPlugin(window[k]);
+            }
         }
+        LiveReload.addPlugin(__less);
+        LiveReload.on('shutdown', function() {
+            return delete window.LiveReload;
+        });
+        LiveReload.on('connect', function() {
+            return CustomEvents.fire(document, 'LiveReloadConnect');
+        });
+        LiveReload.on('disconnect', function() {
+            return CustomEvents.fire(document, 'LiveReloadDisconnect');
+        });
+        CustomEvents.bind(document, 'LiveReloadShutDown', function() {
+            return LiveReload.shutDown();
+        });
     }
-    LiveReload.addPlugin(__less);
-    LiveReload.on('shutdown', function() {
-        return delete window.LiveReload;
-    });
-    LiveReload.on('connect', function() {
-        return CustomEvents.fire(document, 'LiveReloadConnect');
-    });
-    LiveReload.on('disconnect', function() {
-        return CustomEvents.fire(document, 'LiveReloadDisconnect');
-    });
-    CustomEvents.bind(document, 'LiveReloadShutDown', function() {
-        return LiveReload.shutDown();
-    });
 })();
