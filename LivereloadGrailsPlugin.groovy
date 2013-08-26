@@ -1,5 +1,6 @@
 import io.belov.grails.livereload.LiveReload
 import io.belov.grails.livereload.LiveReloadConfigHolder
+import io.belov.grails.livereload.LiveReloadSmartChangeListener
 import org.apache.commons.io.FilenameUtils
 import org.springframework.core.io.FileSystemResource
 
@@ -51,7 +52,7 @@ This plugin automatically reloads you css/js files by using livereload-js
             }
 
             if (doReload) {
-                LiveReload.instance.fileReloaded(path)
+                LiveReloadSmartChangeListener.instance.fileReloaded(path)
             }
         }
     }
