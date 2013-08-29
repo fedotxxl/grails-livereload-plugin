@@ -746,15 +746,71 @@
                         additionalWaitingTime = 200;
                     }
                     return _this.Timer.start(additionalWaitingTime, function() {
-                        var _ref;
+                        var _ref, answer;
                         if (!link.parentNode) {
                             return;
                         }
                         link.parentNode.removeChild(link);
                         clone.onreadystatechange = null;
-                        return (_ref = _this.window.StyleFix) != null ? _ref.link(clone) : void 0;
+                        answer = (_ref = _this.window.StyleFix) != null ? _ref.link(clone) : void 0;
+                        _this.flashAfterStylesheetReload();
+                        return answer
                     });
                 });
+            };
+
+            Reloader.prototype.flashAfterStylesheetReload = function() {
+                var notification = document.getElementById("livereload-notifier");
+
+                if (notification) {
+                    return;
+                } else {
+                    notification = document.createElement("div");
+                    notification.id = "livereload-notifier";
+                    notification.style.cssText = "position: fixed;" +
+                        "z-index: 999;" +
+                        "top: 0;" +
+                        "left: 0;" +
+                        "right: 0;" +
+                        "height: 40px;" +
+                        "line-height: 40px;" +
+                        "text-align: center;" +
+                        "background: red;" +
+                        "opacity: 1;" +
+                        "transition: opacity 0.3s ease;" +
+                        "font-weight: bold;" +
+                        "font-size: 16px;";
+                    document.body.appendChild(notification);
+                }
+
+                notification.innerText = "Reloaded!";
+
+                setTimeout(function() {
+                    notification.style.opacity = 0
+                    setTimeout(function() {
+                        notification.parentNode.removeChild(notification);
+                    }, 300);
+                }, 200);
+//
+//
+//                    var bodyStyle = document.documentElement.style;
+//                var oldCssText = bodyStyle.cssText;
+//                var cssText = "background: red !important; -webkit-transition: background 0.5s ease;";
+//
+//                bodyStyle.cssText = cssText;
+//
+//                var resetBackground = function() {
+//                    bodyStyle.backgroundColor = '';
+//                };
+//
+//                var revertChanges = function() {
+//                    bodyStyle.cssText = oldCssText;
+//                };
+//
+//                setTimeout(function() {
+//                    resetBackground();
+//                    setTimeout(revertChanges, 500);
+//                }, 0);
             };
 
             Reloader.prototype.reattachImportedRule = function(_arg) {

@@ -2,11 +2,16 @@ import io.belov.grails.livereload.LiveReload
 import io.belov.grails.livereload.LiveReloadConfigHolder
 import io.belov.grails.livereload.LiveReloadSmartChangeListener
 import org.apache.commons.io.FilenameUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.core.io.FileSystemResource
 
 class LivereloadGrailsPlugin {
+
+    private static final Logger _log = LoggerFactory.getLogger("io.belov.grails.livereload.LivereloadGrailsPlugin")
+
     // the plugin version
-    def version = "0.2.1"
+    def version = "0.2.10"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
     // the other plugins this plugin depends on
@@ -39,31 +44,39 @@ This plugin automatically reloads you css/js files by using livereload-js
     }
 
     def onChange = { event ->
-        if (LiveReloadConfigHolder.enabled && event.source instanceof FileSystemResource) {
-            File file = event.source.file
-            def path = file.canonicalPath
-            def extension = FilenameUtils.getExtension(file.name).toLowerCase()
-            def doReload = false
+        try {
+            if (LiveReloadConfigHolder.enabled && event.source instanceof FileSystemResource) {
+                File file = event.source.file
+                def path = file.canonicalPath
+                def extension = FilenameUtils.getExtension(file.name).toLowerCase()
+                def doReload = false
 
-            if (extension == 'js' && LiveReloadConfigHolder.config.js) {
-                doReload = true
-            } else if (extension == 'css' && LiveReloadConfigHolder.config.css) {
-                doReload = true
-            }
+                if (extension == 'js' && LiveReloadConfigHolder.config.js) {
+                    doReload = true
+                } else if (extension == 'css' && LiveReloadConfigHolder.config.css) {
+                    doReload = true
+                }
 
-            if (doReload) {
-                LiveReloadSmartChangeListener.instance.fileReloaded(path)
+                if (doReload) {
+                    LiveReloadSmartChangeListener.instance.fileReloaded(path)
+                }
             }
+        } catch (Throwable e) {
+            _log.error("Livereload: exception on reloading file ${event.source}", e)
         }
     }
 
     def onConfigChange = { event ->
-        //forget old config values
-        LiveReloadConfigHolder.reset()
+        try {
+            //forget old config values
+            LiveReloadConfigHolder.reset()
 
-        //start server (enable from false to true)
-        if (LiveReloadConfigHolder.enabled) {
-            LiveReload.instance.startServer()
+            //start server (enable from false to true)
+            if (LiveReloadConfigHolder.enabled) {
+                LiveReload.instance.startServer()
+            }
+        } catch (Throwable e) {
+            _log.error("Livereload: exception on config reload", e)
         }
     }
 
