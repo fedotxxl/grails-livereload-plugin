@@ -791,26 +791,6 @@
                         notification.parentNode.removeChild(notification);
                     }, 300);
                 }, 200);
-//
-//
-//                    var bodyStyle = document.documentElement.style;
-//                var oldCssText = bodyStyle.cssText;
-//                var cssText = "background: red !important; -webkit-transition: background 0.5s ease;";
-//
-//                bodyStyle.cssText = cssText;
-//
-//                var resetBackground = function() {
-//                    bodyStyle.backgroundColor = '';
-//                };
-//
-//                var revertChanges = function() {
-//                    bodyStyle.cssText = oldCssText;
-//                };
-//
-//                setTimeout(function() {
-//                    resetBackground();
-//                    setTimeout(revertChanges, 500);
-//                }, 0);
             };
 
             Reloader.prototype.reattachImportedRule = function(_arg) {
