@@ -360,6 +360,7 @@
                 var l = getLocation(element.src);
                 options.host = l.hostname;
                 options.verbose = (l.search.match(/LR-verbose/)) ? true : false;
+                options.flashOnCssReload = (l.search.match(/LR-flashOnCssReload/)) ? true : false;
 
                 if (m[2]) {
                     _ref2 = m[2].split('&');
@@ -760,6 +761,8 @@
             };
 
             Reloader.prototype.flashAfterStylesheetReload = function() {
+                if (!this.options.flashOnCssReload) return;
+
                 var notification = document.getElementById("livereload-notifier");
 
                 if (notification) {
@@ -972,6 +975,7 @@
                 liveImg: (_ref2 = message.liveImg) != null ? _ref2 : true,
                 originalPath: message.originalPath || '',
                 overrideURL: message.overrideURL || '',
+                flashOnCssReload: this.options.flashOnCssReload,
                 serverURL: "http://" + this.options.host + ":" + this.options.port
             });
         };

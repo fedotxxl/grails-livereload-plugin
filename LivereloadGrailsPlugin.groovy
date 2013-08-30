@@ -11,7 +11,7 @@ class LivereloadGrailsPlugin {
     private static final Logger _log = LoggerFactory.getLogger("io.belov.grails.livereload.LivereloadGrailsPlugin")
 
     // the plugin version
-    def version = "0.2.10"
+    def version = "0.2.12"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
     // the other plugins this plugin depends on
@@ -36,7 +36,8 @@ This plugin automatically reloads you css/js files by using livereload-js
     def doWithConfigOptions = {
         'css'(type: Boolean, defaultValue: false)
         'js'(type: Boolean, defaultValue: false)
-        'verbose'(type: Boolean, defaultValue: true)
+        'flashOnCssReload'(type: Boolean, defaultValue: true)
+        'verbose'(type: Boolean, defaultValue: false)
     }
 
     def doWithSpring = { ->
