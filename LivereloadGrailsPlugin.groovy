@@ -11,7 +11,7 @@ class LivereloadGrailsPlugin {
     private static final Logger _log = LoggerFactory.getLogger("io.belov.grails.livereload.LivereloadGrailsPlugin")
 
     // the plugin version
-    def version = "0.2.12"
+    def version = "0.2.17"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.0 > *"
     // the other plugins this plugin depends on

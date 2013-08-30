@@ -22,6 +22,7 @@ class LiveReloadSmartChangeListener {
     private ConcurrentMap<String, Future> tasksByFiles = new ConcurrentHashMap()
     private ConcurrentHashMap<String, String> urlsByContent = new ConcurrentHashMap()
     private LinkGenerator linkGenerator = null
+    private volatile String contextPath = null
     private static final CHECK_DELAY = 500
     private static final CHECK_TIME_LIMIT = 5000
 
@@ -42,8 +43,7 @@ class LiveReloadSmartChangeListener {
     }
 
     private doFileReload(String path) {
-        def relativePath = getRelativeFilePath(path)
-        def url = (relativePath) ? getLinkGenerator().resource(file: relativePath, absolute: true) : null
+        def url = getUrlForFile(path)
 
         def doLoop = true
         def triggerClient = false
@@ -63,7 +63,7 @@ class LiveReloadSmartChangeListener {
 
             if (triggerClient) {
                 LiveReload.instance.fileReloaded(path)
-                if (url) urlsByContent[url] = newContent
+                if (url && newContent) urlsByContent[url] = newContent
                 triggerClient = false
             }
 
@@ -104,5 +104,32 @@ class LiveReloadSmartChangeListener {
             log.info("Livereload: unable to get content by URL ${url}")
             return null
         }
+    }
+
+    private getUrlForFile(String path) {
+        def relativePath = getRelativeFilePath(path)
+        def contextPath = getContextPath()
+
+        if (relativePath) {
+            if (contextPath) {
+                return getLinkGenerator().resource(file: FilenameUtils.normalize("${contextPath}/${relativePath}", true), absolute: true)
+            } else {
+                return getLinkGenerator().resource(file: relativePath, absolute: true)
+            }
+        } else {
+            return null
+        }
+    }
+
+    private getContextPath() {
+        if (contextPath == null) {
+            return Holders.config.grails.app.context
+        } else {
+            return contextPath
+        }
+    }
+
+    public setContextPath(String contextPath) {
+        this.@contextPath = contextPath
     }
 }

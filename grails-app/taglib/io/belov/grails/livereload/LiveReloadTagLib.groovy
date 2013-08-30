@@ -10,6 +10,9 @@ class LiveReloadTagLib {
 
     def js = {
         if (LiveReloadConfigHolder.enabled) {
+            //save app context path
+            LiveReloadSmartChangeListener.instance.contextPath = request.contextPath
+
             def params = []
             if (LiveReloadConfigHolder.config.verbose) params << 'LR-verbose=1'
             if (LiveReloadConfigHolder.config.flashOnCssReload) params << 'LR-flashOnCssReload=1'
